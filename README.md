@@ -1,2 +1,2 @@
-# First
-初次使用练习
+# MMI-test-on-arm-windows
+To test the PC on arm windows
