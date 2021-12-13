@@ -1,0 +1,451 @@
+# -*- coding: utf-8 -*-
+
+import sys
+from PyQt5.QtWidgets import (QWidget, QDesktopWidget,QToolTip, 
+    QPushButton, QApplication,QMessageBox)
+from PyQt5.QtGui import QFont  
+import os 
+from os import startfile
+from PyQt5.QtCore import pyqtSlot
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+list_1=np.zeros(20)
+print(list_1)
+      
+#### 可视化主框架搭建
+class Example(QWidget):
+    
+    def __init__(self):
+        super().__init__()
+        
+        self.initUI() #界面绘制交给InitUi方法
+        
+        
+    def initUI(self):
+        #这种静态的方法设置一个用于显示工具提示的字体。我们使用10px滑体字体。
+        QToolTip.setFont(QFont('SansSerif', 10))
+        
+        #创建一个提示，我们称之为settooltip()方法。我们可以使用丰富的文本格式
+        self.setToolTip('This is a <b>QWidget</b> widget')
+        
+        #创建一个PushButton并为他设置一个tooltip
+        #btn = QPushButton('Button', self)
+        #btn.setToolTip('This is a <b>QPushButton</b> widget')
+        
+        #btn.sizeHint()显示默认尺寸
+        #btn.resize(btn.sizeHint())
+        
+        #移动窗口的位置
+        #btn.move(50, 50)       
+        
+        #####camera 模块 
+        fatn = QPushButton('测试失败', self)
+        fatn.setToolTip('这是 <b>测试失败</b> 模块,点击确认本次测试是否失败')
+        fatn.clicked.connect(self.on_click)
+        fatn.resize(fatn.sizeHint())
+        fatn.move(50, 50)
+
+        sensor = QPushButton('环境光检测模块', self)
+        sensor.setToolTip('这是 <b>环境光</b> 模块,请按文档测试环境光后选择结果')
+        sensor.clicked.connect(self.on_click_1)
+        sensor.resize(sensor.sizeHint())
+        sensor.move(150, 50)
+        
+        dptn = QPushButton('显示模块', self)
+        dptn.setToolTip('这是 <b>屏幕显示测试</b> 模块,测试开始后按提示进行操作')
+        dptn.clicked.connect(self.on_click_2)
+        dptn.resize(dptn.sizeHint())
+        dptn.move(250, 50)
+
+        cmtn = QPushButton('摄像模块', self)
+        cmtn.setToolTip('这是 <b>摄像</b> 模块,运行完毕请到文件资源管理器的图片/本机图片中查看结果')
+        cmtn.clicked.connect(self.on_click_3)
+        cmtn.resize(cmtn.sizeHint())
+        cmtn.move(350, 50)
+    
+        hrtn = QPushButton('霍尔传感器', self)
+        hrtn.setToolTip('这是 <b>霍尔传感器</b> 模块')
+        hrtn.clicked.connect(self.on_click_4)
+        hrtn.resize(hrtn.sizeHint())
+        hrtn.move(450, 50)
+
+        gytn = QPushButton('陀螺仪', self)
+        gytn.setToolTip('这是 <b>陀螺仪</b> 模块')
+        gytn.clicked.connect(self.on_click_5)
+        gytn.resize(gytn.sizeHint())
+        gytn.move(550, 50)
+
+        cptn = QPushButton('指南针', self)
+        cptn.setToolTip('这是 <b>指南针</b> 模块')
+        cptn.clicked.connect(self.on_click_6)
+        cptn.resize(cptn.sizeHint())
+        cptn.move(650, 50)
+
+        chtn = QPushButton('充电', self)
+        chtn.setToolTip('这是 <b>充电</b> 模块')
+        chtn.clicked.connect(self.on_click_7)
+        chtn.resize(chtn.sizeHint())
+        chtn.move(50, 150)
+
+        GPtn = QPushButton('GPS', self)
+        GPtn.setToolTip('这是 <b>GPS定位</b> 模块，请点击后等待地图打开进行操作')
+        GPtn.clicked.connect(self.on_click_8)
+        GPtn.resize(GPtn.sizeHint())
+        GPtn.move(150, 150)
+
+        tctn = QPushButton('鼠标U盘测试', self)
+        tctn.setToolTip('这是 <b>鼠标U盘</b> 模块')
+        tctn.clicked.connect(self.on_click_9)
+        tctn.resize(tctn.sizeHint())
+        tctn.move(250, 150)
+
+        tftn = QPushButton('TFcard测试', self)
+        tftn.setToolTip('这是 <b>TFcard测试</b> 模块')
+        tftn.clicked.connect(self.on_click_10)
+        tftn.resize(tftn.sizeHint())
+        tftn.move(350, 150)
+
+        sgtn = QPushButton('SIM卡&5G测试', self)
+        sgtn.setToolTip('这是 <b>SIM卡&5G测试</b> 模块')
+        sgtn.clicked.connect(self.on_click_11)
+        sgtn.resize(sgtn.sizeHint())
+        sgtn.move(450, 150)
+
+        vdtn = QPushButton('喇叭测试', self)
+        vdtn.setToolTip('这是 <b>喇叭测试</b> 模块')
+        vdtn.clicked.connect(self.on_click_12)
+        vdtn.resize(vdtn.sizeHint())
+        vdtn.move(550, 150)
+
+        kbtn = QPushButton('键盘测试', self)
+        kbtn.setToolTip('这是 <b>键盘测试</b> 模块')
+        kbtn.clicked.connect(self.on_click_13)
+        kbtn.resize(kbtn.sizeHint())
+        kbtn.move(650, 150)
+
+        vrtn = QPushButton('录音测试', self)           #video record
+        vrtn.setToolTip('这是 <b>录音测试</b> 模块')
+        vrtn.clicked.connect(self.on_click_14)
+        vrtn.resize(vrtn.sizeHint())
+        vrtn.move(750, 150)
+
+        cktn = QPushButton('触控笔测试', self)          
+        cktn.setToolTip('这是 <b>触控笔测试</b> 模块')
+        cktn.clicked.connect(self.on_click_15)
+        cktn.resize(cktn.sizeHint())
+        cktn.move(850, 150)
+
+        wftn = QPushButton('WIFI测试', self)         
+        wftn.setToolTip('这是 <b>WIFI测试</b> 模块')
+        wftn.clicked.connect(self.on_click_16)
+        wftn.resize(wftn.sizeHint())
+        wftn.move(950, 150)
+
+        bttn = QPushButton('蓝牙测试', self)          
+        bttn.setToolTip('这是 <b>蓝牙测试</b> 模块')
+        bttn.clicked.connect(self.on_click_17)
+        bttn.resize(bttn.sizeHint())
+        bttn.move(1050, 150)
+
+        thtn = QPushButton('触控测试', self)          
+        thtn.setToolTip('这是 <b>触控测试</b> 模块')
+        thtn.clicked.connect(self.on_click_18)
+        thtn.resize(thtn.sizeHint())
+        thtn.move(150, 250)
+
+        
+        zxtn = QPushButton('查看测试完成状态', self)          
+        zxtn.setToolTip('这是 <b>查看测试完成状态</b> 模块')
+        zxtn.clicked.connect(self.on_click_19)
+        zxtn.resize(zxtn.sizeHint())
+        zxtn.move(250, 250)
+
+        actn = QPushButton('重力加速度模块完成状态', self)          
+        actn.setToolTip('这是 <b>重力加速度</b> 模块')
+        actn.clicked.connect(self.on_click_20)
+        actn.resize(actn.sizeHint())
+        actn.move(750, 50)
+
+
+        self.setGeometry(300, 300, 1300, 600)
+        self.setWindowTitle('Tooltips')    
+        self.show()
+
+    @pyqtSlot()
+    def on_click(self):
+        reply = QMessageBox.question(self, 'Tooltips',
+            "本次测试项目是否失败?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            quit()          
+        else:
+            list_1[0]='2'       
+            QMessageBox.information(self, "Tooltips", "本次测试完毕，无功能障碍",QMessageBox.Yes) 
+            
+
+    def on_click_1(self):
+        reply = QMessageBox.question(self, 'Tooltips',
+            "本次环境光模块测试是否成功?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[1]='1'
+            QMessageBox.information(self, "Tooltips", "环境光模块测试完毕，无功能障碍",QMessageBox.Yes)            
+        else:
+            quit()
+
+    def on_click_2(self):
+        os.system("C:\MMI_test_env\Eizo-test9.exe")
+        reply = QMessageBox.question(self, 'Tooltips',
+            "本次显示测试是成功?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[2]='1'
+            QMessageBox.information(self, "Tooltips", "显示模块测试完毕，无功能障碍",QMessageBox.Yes)            
+        else:
+            quit()
+
+    def on_click_3(self):
+        os.system("cd C:\MMI_test_env")
+        os.system("python mouse.py") 
+        reply = QMessageBox.question(self, 'Tooltips',
+            "请先打开资源管理器图片/本机图片查看结果，再确认本次测试是否成功?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[3]='1'
+            QMessageBox.information(self, "Tooltips", "camera测试完毕，无功能障碍",QMessageBox.Yes)
+            
+        else:
+            quit()
+
+    def on_click_4(self):
+        reply = QMessageBox.question(self, 'Tooltips',
+            "霍尔传感器是否有效?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[4]='1'
+            QMessageBox.information(self, "Tooltips", "霍尔传感器测试测试完毕，无功能障碍",QMessageBox.Yes)
+        else:
+            quit()
+    
+    def on_click_5(self):
+        os.system("start Microsoftedge  https://intel.github.io/generic-sensor-demos/sensor-tester/build/bundled/gyroscope")
+        reply = QMessageBox.question(self, 'Tooltips',"陀螺仪测试是否有效?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[5]='1'
+            QMessageBox.information(self, "Tooltips", "陀螺仪测试完毕，无功能障碍",QMessageBox.Yes)
+        else:
+            quit()
+        
+        
+            
+    def on_click_6(self):
+        os.system("start Microsoftedge https://intel.github.io/generic-sensor-demos/sensor-tester/build/bundled/magnetometer-screen")
+        reply = QMessageBox.question(self, 'Tooltips',
+            "指南针是否有效?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[6]='1'
+            QMessageBox.information(self, "Tooltips", "指南针测试完毕，无功能障碍",QMessageBox.Yes)
+        else:
+            quit()
+
+    def on_click_7(self):
+        reply = QMessageBox.question(self, 'Tooltips',
+            "请插入充电线，确认是否正常显示充电?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',
+            "请拔掉充电线，确认是否正常离开充电状态?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                list_1[7]='1'
+                QMessageBox.information(self, "Tooltips", "充电模块测试完毕，无功能障碍",QMessageBox.Yes)
+            else:
+                quit()
+        else:
+            quit()
+    
+    def on_click_8(self):
+        os.system("start Microsoftedge  https://map.baidu.com/")
+        reply = QMessageBox.question(self, 'Tooltips',"GPS测试是否有效?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[8]='1'
+            QMessageBox.information(self, "Tooltips", "GPS测试测试完毕，无功能障碍",QMessageBox.Yes)
+        else:
+            quit()
+    
+
+    def on_click_9(self):
+        reply = QMessageBox.question(self, 'Tooltips',
+            "鼠标是否正常连接?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',
+            "U盘是否正常连接?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                list_1[9]='1'
+                QMessageBox.information(self, "Tooltips", "鼠标&U盘测试完毕，无功能障碍",QMessageBox.Yes)
+            else:
+                quit()
+        else:
+            quit()
+
+    def on_click_10(self):
+        reply = QMessageBox.question(self, 'Tooltips',"请插入sd卡，能否正常读取?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',"将audio1复制进入sd卡，将audio2复制进入平板，能否正常播放?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                reply = QMessageBox.question(self, 'Tooltips',"热插拔后能否正常读取sd卡?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                if reply == QMessageBox.Yes:
+                    list_1[10]='1'
+                    QMessageBox.information(self, "Tooltips", "SDcard测试完毕，无功能障碍",QMessageBox.Yes)
+                else:
+                    quit()
+            else:
+                quit()
+        else:
+            quit()
+
+    def on_click_11(self):
+        reply = QMessageBox.question(self, 'Tooltips',"请插入SIM卡，并确认是否正常显示?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',"请连接网络下载QQ音乐并安装，能否正常下载安装？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                reply = QMessageBox.question(self, 'Tooltips',"热插拔SIM卡，确认过程是否正常显示图标并有网络连接？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                if reply == QMessageBox.Yes:
+                    list_1[11]='1'
+                    QMessageBox.information(self, "Tooltips", "SIM卡&5G测试完毕，无功能障碍",QMessageBox.Yes)           
+                else:
+                    quit()
+            else:
+                quit()
+        else:
+            quit()
+    
+    
+        
+    def on_click_12(self):
+        startfile("C:\MMI_test_env/青藏高原.mp4")
+        reply = QMessageBox.question(self, 'Tooltips',"播放视频，请调节音量并确认高低音是否正常。", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[12]='1'
+            QMessageBox.information(self, "Tooltips", "喇叭模块测试完毕，无功能障碍",QMessageBox.Yes)           
+        else:
+            quit()
+    
+    def on_click_13(self):
+        os.system("C:\MMI_test_env\keyboardtestutility.exe")
+        reply = QMessageBox.question(self, 'Tooltips',"确认键盘功能是否正常？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[13]='1'
+            QMessageBox.information(self, "Tooltips", "键盘模块测试完毕，无功能障碍",QMessageBox.Yes)           
+        else:
+            quit()
+    
+    def on_click_14(self):
+        os.system("C:\MMI_test_env\Audacity\Audacity.exe")
+        reply = QMessageBox.question(self, 'Tooltips',"确认MIC功能是否正常？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[14]='1'
+            QMessageBox.information(self, "Tooltips", "MIC模块测试完毕，无功能障碍",QMessageBox.Yes)           
+        else:
+            quit()
+
+    def on_click_15(self):
+        os.system("C:\MMI_test_env\huitu.exe")
+        reply = QMessageBox.question(self, 'Tooltips',"确认触控笔功能是否正常？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[15]='1'
+            QMessageBox.information(self, "Tooltips", "触控笔模块测试完毕，无功能障碍",QMessageBox.Yes)           
+        else:
+            quit()
+    
+    def on_click_16(self):
+        reply = QMessageBox.question(self, 'Tooltips',"请点击右下角wifi图标，点击wlan选项，确认wifi是否正常打开？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',"连接wifi，打开网页在线播放视频，确认是否正常连接？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                list_1[16]='1'
+                QMessageBox.information(self, "Tooltips", "wlan模块测试完毕，无功能障碍",QMessageBox.Yes)           
+            else:
+                quit()          
+        else:
+            quit()
+
+    def on_click_17(self):
+        reply = QMessageBox.question(self, 'Tooltips',"打开蓝牙，是否可以搜索到附近的蓝牙信号源？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            reply = QMessageBox.question(self, 'Tooltips',"连接键盘和耳机，在桌面建立记事本输入‘新田科技’，确认是否正常连接？", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+            if reply == QMessageBox.Yes:
+                list_1[17]='1'
+                QMessageBox.information(self, "Tooltips", "蓝牙模块测试完毕，无功能障碍",QMessageBox.Yes)           
+            else:
+                quit()           
+        else:
+            quit()
+
+    def on_click_18(self):
+        os.system("C:\MMI_test_env\IsMyTouchScreenOK_x64.exe")
+        reply = QMessageBox.question(self, 'Tooltips',
+            "本次触控模块测试是否成功?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[18]='1'
+            QMessageBox.information(self, "Tooltips", "触控模块测试完毕，无功能障碍",QMessageBox.Yes)            
+        else:
+            quit()
+
+    def on_click_19(self):
+        X=np.array(["test failured","env light","display","camera","Hall sensor","gyro","compass","charge","GPS","mouse/U Disk","TFcard","SIM&5G","speaker","keyboard","recording","Stylus","WIFI","Bluetooth","Screen touch","Acceleration of gravity"])
+        plt.barh(X,np.array(list_1))
+        plt.show()
+
+    def on_click_20(self):
+        os.system("start Microsoftedge  https://intel.github.io/generic-sensor-demos/sensor-tester/build/bundled/")
+        reply = QMessageBox.question(self, 'Tooltips',"本次重力加速度模块测试是否成功?", QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+        if reply == QMessageBox.Yes:
+            list_1[19]='1'
+            QMessageBox.information(self, "Tooltips", "触控模块测试完毕，无功能障碍",QMessageBox.Yes)            
+        else:
+            quit()
+
+
+    
+        
+    def closeEvent(self):
+        
+        reply = QMessageBox.question(self, 'Tooltips',
+            "Are you sure to quit?", QMessageBox.Yes | 
+            QMessageBox.No, QMessageBox.No)
+ 
+        if reply == QMessageBox.Yes:
+            print(list_1)
+            quit()
+        else:
+            pass    
+    
+    def center(self):        
+        #获得窗口
+        qr = self.frameGeometry()
+        #获得屏幕中心点
+        cp = QDesktopWidget().availableGeometry().center()
+        #显示到屏幕中心
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    
+
+if __name__ == '__main__':
+    #创建应用程序和对象
+    app = QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
+
+
+
+      
+
+    
